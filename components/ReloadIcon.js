@@ -12,13 +12,13 @@ export default function ReloadIcon({ load }) {
     )
 }
 
-// const styles = StyleSheet.create({
-//     reloadIcon: {
-//         position: 'absolute',
-//         top: 60,
-//         right: 20,
-//     },
-// })
+const styles = StyleSheet.create({
+    reloadIcon: {
+        position: 'absolute',
+        top: 60,
+        right: 20,
+    },
+})
 
 // git switch test 
 // git pull origin shahadat
