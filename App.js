@@ -1,21 +1,80 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import * as Location from 'expo-location'
+
+const WEATHER_API_KEY = '33cb11fcf93292e955c77ed68ec4117a'
+const BASE_WEATHER_URL = 'api.openweathermap.org/data/2.5/weather?'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Text>Open up App.js to start working on your app!</Text>
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [currentWeather, setCurrentWeather] = useState(null)
+  const [unitsSystem, setUnitsSystem] = useState('metric')
+
+  useEffect(() => {
+    load()
+  }, [])
+
+  async function load() {
+       
+    try {
+      let { status } = await Location.requestBackgroundPermissionsAsync()
+
+      if (status !== 'granted') {
+        setErrorMessage('Access to location is needed to run the app')
+        return
+      }
+      const location = await Location.getCurrentPositionAsync()
+          
+         
+
+      const { latitude, longitude } = location.coords
+          
+      const weatherUrl = `${BASE_WEATHER_URL}lat=${latitude}&lon=${longitude}&units=${unitsSystem}&appid=${WEATHER_API_KEY}`
+      alert(`latitude: ${latitude}, longitude: ${longitude}`)
+          
+      const response = await fetch(weatherUrl)
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setCurrentWeather(result)
+      } else {
+        setErrorMessage(result.message)
+      }
+    } catch (error) {
+      setErrorMessage(result.message)  
+    }
+  }
+  
+  if (currentWeather) {
+    const {
+      main: { temp }
+    } = currentWeather
+    
+    return (
+      <View style={styles.container}>
+        <Text>{ temp}</Text>
+        <StatusBar style="auto" />
+     
+      </View>
+    )
+  }
+  else {
+    return (
+      <View style={styles.container}>
+        <Text>{errorMessage}</Text>
       <StatusBar style="auto" />
+   
     </View>
-  );
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
