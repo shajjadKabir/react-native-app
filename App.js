@@ -54,9 +54,10 @@ export default function App() {
     
     return (
       <View style={styles.container}>
-        <Text>{ temp}</Text>
         <StatusBar style="auto" />
-     
+         <View style={styles.main}>
+           <Text>{ temp}</Text>
+        </View>
       </View>
     )
   }
@@ -65,7 +66,6 @@ export default function App() {
       <View style={styles.container}>
         <Text>{errorMessage}</Text>
       <StatusBar style="auto" />
-   
     </View>
     )
   }
@@ -74,9 +74,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
-    alignItems: 'center',
     justifyContent: 'center',
   },
+  main: {
+    justifyContent: 'center',
+    flex: 1,
+  }
 });
 
